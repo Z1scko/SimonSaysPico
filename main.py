@@ -104,7 +104,7 @@ class Simon:
         self.led2.value = False
         self.led3.value = False
 
-        self.showingColors()
+        
 
     def showingColors(self) -> None:
 
@@ -194,15 +194,15 @@ class Simon:
     
                     print(f"inputlist: {self.inputList}")
                     print(f"gamelist: {self.gameList}")
-                    if not self.inputList[self.counter] :
+                    
 
-                        if self.inputList[self.counter] != self.gameList[self.counter]:
+                    if self.inputList[self.counter] != self.gameList[self.counter]:
                             #nop
-                            print("worng button")
-                            self.loseAnimation()
-                            return
-                        elif self.inputList[self.counter] == self.gameList[self.counter]:
-                            self.counter +=1
+                        print("worng button")
+                        self.loseAnimation()
+                        return
+                    elif self.inputList[self.counter] == self.gameList[self.counter]:
+                        self.counter +=1
                     
                     isButtonPressed = True
             
@@ -263,33 +263,41 @@ class Simon:
             time.sleep(0.4)
             self.led1.value = False
         
-        time.sleep(2)
-        self.sleepAnimation()
+        time.sleep(1)
+        
 
     def sleepAnimation(self) -> None:
         #no sound, it's nahessing profoundly
 
 
-        while not self.button0.value or self.button1.value or self.button2.value or self.button3.value: # if nothing is touched, stays on this menu and doesn't plays
-            self.led0.value = True
-            time.sleep(0.09)
-            self.led0.value = False
-            self.led3.value = True
-            time.sleep(0.09)
-            self.led3.value = False
-            self.led2.value = True
-            time.sleep(0.09)
-            self.led2.value = False
-            self.led1.value = True
-            time.sleep(0.09)
-            self.led1.value = False 
-            print("nahess")
+        
+        self.led0.value = True
+        time.sleep(0.09)
+        self.led0.value = False
+        self.led3.value = True
+        time.sleep(0.09)
+        self.led3.value = False
+        self.led2.value = True
+        time.sleep(0.09)
+        self.led2.value = False
+        self.led1.value = True
+        time.sleep(0.09)
+        self.led1.value = False 
+        print("nahess")
 
         
-        self.start()
+        
         
 
 simon = Simon()
 
 if __name__ == "__main__":
+    while True:
+        while not simon.button0.value or simon.button1.value or simon.button2.value or simon.button3.value: # if nothing is touched, stays on this menu and doesn't plays
+            simon.sleepAnimation()
+        simon.start()
+        simon.showingColors()
+        simon.inputColors() #manages the loosing and winning animations,
+        
+        #elif success, start again
     simon.sleepAnimation()
