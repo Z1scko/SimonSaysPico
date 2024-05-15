@@ -85,6 +85,7 @@ class Simon:
 
         self.level = 1 # Allows us to increase difficulty as you win games
         self.timeLimit = self.level + 10 #time limit wich is one second longer at each iteration of level
+        self.winFlag = True # Gives indication whenever to quit to the sleep animation, or to continue
 
     def start(self) -> None:
         print("start")
@@ -108,8 +109,7 @@ class Simon:
 
     def showingColors(self) -> None:
 
-        self.gameList = []
-        self.inputList = []
+        
         print("showing colors")
         for i in range(self.level): #stock the position of the blinking LEDs
             self.gameList.append(randint(0, 3))
@@ -144,7 +144,7 @@ class Simon:
                 time.sleep(0.4)
                 self.led3.value = False
                 
-        self.inputColors()
+        
 
     def inputColors(self) -> None:
         print("input")
@@ -158,7 +158,7 @@ class Simon:
             
 
             isButtonPressed = False
-            time.sleep(0.2) #or the program is too reactive
+            time.sleep(0.4) #or the program is too reactive
             while not isButtonPressed:
 
                 if timer.elapsed() >= self.timeLimit:
@@ -206,11 +206,13 @@ class Simon:
                     
                     isButtonPressed = True
             
-            self.winAnimation()
+            
+        self.winAnimation()
         
         
     def winAnimation(self) -> None:
         print("win")
+        
         timer.restart()
         timer.pause()
         self.level += 1 #You won, so we will spice things a bit :)
@@ -242,6 +244,7 @@ class Simon:
     
     def loseAnimation(self) -> None:
         print("loose")
+        self.winFlag = False 
         timer.restart()
         timer.pause()
 
@@ -268,6 +271,8 @@ class Simon:
 
     def sleepAnimation(self) -> None:
         #no sound, it's nahessing profoundly
+        if not self.winFlag:
+            self.winFlag = True
 
 
         
@@ -295,9 +300,9 @@ if __name__ == "__main__":
     while True:
         while not simon.button0.value or simon.button1.value or simon.button2.value or simon.button3.value: # if nothing is touched, stays on this menu and doesn't plays
             simon.sleepAnimation()
-        simon.start()
-        simon.showingColors()
-        simon.inputColors() #manages the loosing and winning animations,
         
-        #elif success, start again
-    simon.sleepAnimation()
+        while simon.winFlag:
+            simon.start()
+            simon.showingColors()
+            simon.inputColors() #manages the loosing and winning animations itself
+        
