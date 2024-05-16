@@ -1,7 +1,9 @@
 import time 
 from digitalio import DigitalInOut, Direction
 import board
+import simpleio
 from random import randint
+
 class Timer: #to get a stopwatch
     def __init__(self) -> None:
         self.startTime = None
@@ -81,15 +83,30 @@ class Simon:
         self.led1.direction = Direction.OUTPUT
         self.led2.direction = Direction.OUTPUT
         self.led3.direction = Direction.OUTPUT
-    
+
+
+        # # ----------- Buzzer -------------
+
+        self.buzzerPin = board.GP17
+        self.tones = [ 262,  # C4
+              294,  # D4
+              330,  # E4
+              349,  # F4
+              392,  # G4
+              440,  # A4
+              494 ] # B4
+
+        
         #Some variables that must be declared on boot 
 
         self.level = 1 # Allows us to increase difficulty as you win games
-        self.timeLimit = self.level + 10 #time limit wich is one second longer at each iteration of level
+        self.timeLimit = self.level + 1 #time limit wich is one second longer at each iteration of level
         self.winFlag = True # Gives indication whenever to quit to the sleep animation, or to continue
 
     def start(self) -> None:
         print("start")
+        simpleio.tone(self.buzzerPin, self.tones[0], duration=0.1)
+        simpleio.tone(self.buzzerPin, self.tones[4], duration=0.5)
 
         self.counter = 0
         self.gameList = []
@@ -100,7 +117,7 @@ class Simon:
         self.led1.value = True
         self.led2.value = True
         self.led3.value = True
-        time.sleep(2)
+        time.sleep(1)
         self.led0.value = False
         self.led1.value = False
         self.led2.value = False
@@ -119,30 +136,30 @@ class Simon:
         for i in range(len(self.gameList)):
             if self.gameList[i] == 0: #----- Add buzzes on each LED activation (of a different tone)
 
-                time.sleep(0.4)
+                
                 self.led0.value = True 
-                time.sleep(0.4)
+                simpleio.tone(self.buzzerPin, self.tones[0], duration=0.4) #works as a sleep
                 self.led0.value = False
                 
             if self.gameList[i] == 1:
 
-                time.sleep(0.4)
+                
                 self.led1.value = True
-                time.sleep(0.4)
+                simpleio.tone(self.buzzerPin, self.tones[2], duration=0.4)
                 self.led1.value = False
                 
             if self.gameList[i] == 2:
 
-                time.sleep(0.4)
+                
                 self.led2.value = True
-                time.sleep(0.4)
+                simpleio.tone(self.buzzerPin, self.tones[4], duration=0.4)
                 self.led2.value = False
                 
             if self.gameList[i] == 3:
 
-                time.sleep(0.4)
+                
                 self.led3.value = True
-                time.sleep(0.4)
+                simpleio.tone(self.buzzerPin, self.tones[6], duration=0.4)
                 self.led3.value = False
                 
         
@@ -150,7 +167,11 @@ class Simon:
     def inputColors(self) -> None:
         print("input")
         timer.start()
-        
+
+        # while self.counter < len(self.gameList):
+        #     print(timer.elapsed())
+            
+        #for i in range(len(self.gameList)):
         while len(self.inputList) != len(self.gameList):
             
 
@@ -169,6 +190,7 @@ class Simon:
                     if self.button0.value:
                         self.inputList.append(0)
                         while self.button0.value:
+                            simpleio.tone(self.buzzerPin, self.tones[0], duration=0.1)
                             self.led0.value = True
                         self.led0.value = False
 
@@ -176,18 +198,21 @@ class Simon:
                         self.inputList.append(1)
                         while self.button1.value:
                             self.led1.value = True
+                            simpleio.tone(self.buzzerPin, self.tones[2], duration=0.1)
                         self.led1.value = False
 
                     elif self.button2.value:
                         self.inputList.append(2)
                         while self.button2.value:
                             self.led2.value = True
+                            simpleio.tone(self.buzzerPin, self.tones[4], duration=0.1)
                         self.led2.value = False
 
                     elif self.button3.value:
                         self.inputList.append(3)
                         while self.button3.value:
                             self.led3.value = True
+                            simpleio.tone(self.buzzerPin, self.tones[6], duration=0.1)
                         self.led3.value = False
     
                     print(f"inputlist: {self.inputList}")
@@ -217,7 +242,11 @@ class Simon:
         self.counter = 0 #resets counter
 
         #buzzes some cools sounds 
-        for i in range(4):
+
+        for i in range(len(self.tones) - 1):
+            simpleio.tone(self.buzzerPin, self.tones[i], duration=0.1)
+
+        for i in range(2):
             self.led0.value = True
             self.led1.value = True
             self.led2.value = True
@@ -238,6 +267,7 @@ class Simon:
         self.led2.value = False
         self.led3.value = False
         
+        
     
     def loseAnimation(self) -> None:
         print("loose")
@@ -247,8 +277,12 @@ class Simon:
 
         self.level = 0
         # Cross pattern "X" with the LEDS
+        
+        for i in range(len(self.tones) -1, -1, -1):
+            simpleio.tone(self.buzzerPin, self.tones[i], duration=0.1)
 
-        for i in range(4):
+        
+        for i in range(2):
             
             self.led0.value = True
             time.sleep(0.4)
@@ -301,5 +335,4 @@ if __name__ == "__main__":
         while simon.winFlag:
             simon.start()
             simon.showingColors()
-            simon.inputColors() #manages the loosing and winning animations,
-        
+            simon.inputColors() #manages the loosing and winning animations
