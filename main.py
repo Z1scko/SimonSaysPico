@@ -1,5 +1,5 @@
 import time 
-from digitalio import DigitalInOut, Direction
+from digitalio import DigitalInOut, Direction, Pull
 import board
 from random import randint
 class Timer: #to get a stopwatch
@@ -50,6 +50,7 @@ class Simon:
         self.button1.direction = Direction.INPUT
         self.button2.direction = Direction.INPUT
         self.button3.direction = Direction.INPUT
+
 
         # self.button0Power.direction = Direction.OUTPUT 
         # self.button1Power.direction = Direction.OUTPUT
@@ -158,9 +159,10 @@ class Simon:
             
 
             isButtonPressed = False
-            time.sleep(0.4) #or the program is too reactive
+            
             while not isButtonPressed:
-
+                
+                time.sleep(0.4)
                 if timer.elapsed() >= self.timeLimit:
                     print("to slow")
                     self.loseAnimation()
@@ -304,5 +306,8 @@ if __name__ == "__main__":
         while simon.winFlag:
             simon.start()
             simon.showingColors()
-            simon.inputColors() #manages the loosing and winning animations itself
+            simon.inputColors() #manages the loosing and winning animations,
         
+
+        
+        #elif success, start again  
