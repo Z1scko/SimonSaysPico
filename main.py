@@ -1,5 +1,5 @@
 import time 
-from digitalio import DigitalInOut, Direction, Pull
+from digitalio import DigitalInOut, Direction
 import board
 from random import randint
 class Timer: #to get a stopwatch
@@ -150,11 +150,7 @@ class Simon:
     def inputColors(self) -> None:
         print("input")
         timer.start()
-
-        # while self.counter < len(self.gameList):
-        #     print(timer.elapsed())
-            
-        #for i in range(len(self.gameList)):
+        
         while len(self.inputList) != len(self.gameList):
             
 
@@ -242,7 +238,6 @@ class Simon:
         self.led2.value = False
         self.led3.value = False
         
-        self.start() # here we go again
     
     def loseAnimation(self) -> None:
         print("loose")
@@ -308,6 +303,3 @@ if __name__ == "__main__":
             simon.showingColors()
             simon.inputColors() #manages the loosing and winning animations,
         
-
-        
-        #elif success, start again  
