@@ -41,10 +41,10 @@ class Simon:
         self.button2 = DigitalInOut(board.GP9)
         self.button3 = DigitalInOut(board.GP13)
 
-        # self.button0Power = DigitalInOut(board.GP0)     # Enable button power's pins 
-        # self.button1Power = DigitalInOut(board.GP4)
-        # self.button2Power = DigitalInOut(board.GP8)
-        # self.button3Power = DigitalInOut(board.GP12)
+        self.button0Power = DigitalInOut(board.GP0)     # Enable button power's pins 
+        self.button1Power = DigitalInOut(board.GP4)
+        self.button2Power = DigitalInOut(board.GP8)
+        self.button3Power = DigitalInOut(board.GP12)
 
         self.button0.direction = Direction.INPUT
         self.button1.direction = Direction.INPUT
@@ -52,15 +52,15 @@ class Simon:
         self.button3.direction = Direction.INPUT
 
 
-        # self.button0Power.direction = Direction.OUTPUT 
-        # self.button1Power.direction = Direction.OUTPUT
-        # self.button2Power.direction = Direction.OUTPUT
-        # self.button3Power.direction = Direction.OUTPUT
+        self.button0Power.direction = Direction.OUTPUT 
+        self.button1Power.direction = Direction.OUTPUT
+        self.button2Power.direction = Direction.OUTPUT
+        self.button3Power.direction = Direction.OUTPUT
 
-        # self.button0Power.value = True # gives 3_3V DC to the buttons 
-        # self.button3Power.value = True
-        # self.button2Power.value = True
-        # self.button1Power.value = True
+        self.button0Power.value = True # gives 3_3V DC to the buttons 
+        self.button3Power.value = True
+        self.button2Power.value = True
+        self.button1Power.value = True
 
 
         # ----------- LEDs -------------
