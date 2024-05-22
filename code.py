@@ -100,7 +100,7 @@ class Simon:
         #Some variables that must be declared on boot 
 
         self.level = 1 # Allows us to increase difficulty as you win games
-        self.timeLimit = self.level + 1 #time limit wich is one second longer at each iteration of level
+        self.timeLimit = self.level + 10 #time limit wich is one second longer at each iteration of level
         self.winFlag = True # Gives indication whenever to quit to the sleep animation, or to continue
 
     def start(self) -> None:
@@ -179,10 +179,11 @@ class Simon:
             
             while not isButtonPressed:
                 
-                time.sleep(0.4)
+                #time.sleep(0.1)
                 if timer.elapsed() >= self.timeLimit:
                     print("to slow")
                     self.loseAnimation()
+                    return
                      # Leaves the loop if time's over
             
                 if self.button0.value or self.button1.value or self.button2.value or self.button3.value:
@@ -218,15 +219,16 @@ class Simon:
                     print(f"inputlist: {self.inputList}")
                     print(f"gamelist: {self.gameList}")
                     
-
-                    if self.inputList[self.counter] != self.gameList[self.counter]:
-                            #nop
-                        print("worng button")
-                        self.loseAnimation()
-                        return
-                    elif self.inputList[self.counter] == self.gameList[self.counter]:
-                        self.counter +=1
-                    
+                    try:
+                        if self.inputList[self.counter] != self.gameList[self.counter]:
+                                #nop
+                            print("worng button")
+                            self.loseAnimation()
+                            return
+                        elif self.inputList[self.counter] == self.gameList[self.counter]:
+                            self.counter +=1
+                    except:
+                        pass
                     isButtonPressed = True
             
             
@@ -275,7 +277,7 @@ class Simon:
         timer.restart()
         timer.pause()
 
-        self.level = 0
+        self.level = 1
         # Cross pattern "X" with the LEDS
         
         for i in range(len(self.tones) -1, -1, -1):
