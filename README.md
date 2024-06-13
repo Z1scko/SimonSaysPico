@@ -2,7 +2,7 @@
 A quick simon says project for Raspberry pi pico
 
 # The rules
-When you turn it up, click on a button to stat a game. The device will buzz. Repeat the color sequence in the order to win. The more you win, the harder it become: you wil have one more color to remember after each win.
+When you turn it up, click on a button to start a game. The device will buzz. Repeat the color sequence in the order to win. The more you win, the harder it become: you wil have one more color to remember after each win.
 
 
 Do not forget pull-down resistors for the buttons !
